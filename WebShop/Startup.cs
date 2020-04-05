@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DataAccessLayer.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,9 +13,13 @@ namespace WebShop
 {
     public class Startup
     {
+
+        protected static NLog.Logger Logger { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            Logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -19,6 +28,8 @@ namespace WebShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<DataContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

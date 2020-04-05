@@ -11,11 +11,10 @@ namespace WebShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private NLog.Logger Logger { get; set; }
+        public HomeController()
         {
-            _logger = logger;
+            Logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
         public IActionResult Index()
