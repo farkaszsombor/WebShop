@@ -1,4 +1,3 @@
-using DataAccessLayer.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace WebShop
+namespace Gui
 {
     public class Startup
     {
@@ -27,8 +26,6 @@ namespace WebShop
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
-            services.AddDbContext<DataContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
