@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{FC292796-753D-4511-AA8C-B017253FCE0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShopApp", "WebShopApp\WebShopApp.csproj", "{1065D9EF-3C28-4CA1-8156-00FE31D3CCFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShop", "WebShop\WebShop.csproj", "{0DB23564-9932-4D98-AEC2-D418AFD66946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{FC292796-753D-4511-AA8C-B017253FCE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC292796-753D-4511-AA8C-B017253FCE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC292796-753D-4511-AA8C-B017253FCE0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1065D9EF-3C28-4CA1-8156-00FE31D3CCFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1065D9EF-3C28-4CA1-8156-00FE31D3CCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1065D9EF-3C28-4CA1-8156-00FE31D3CCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1065D9EF-3C28-4CA1-8156-00FE31D3CCFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DB23564-9932-4D98-AEC2-D418AFD66946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DB23564-9932-4D98-AEC2-D418AFD66946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DB23564-9932-4D98-AEC2-D418AFD66946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DB23564-9932-4D98-AEC2-D418AFD66946}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
