@@ -1,18 +1,40 @@
 ﻿@page "/fetchdata"
 
 @using WebShopAdminUI.Data
+@using  WebShopAdminUI.Data.Models
 @inject WeatherForecastService ForecastService
+@inject UserService UserService;
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
+@if (forecasts == null || users == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Naem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (User user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
     <table class="table">
         <thead>
             <tr>
@@ -39,8 +61,11 @@ else
 @code {
     private WeatherForecast[] forecasts;
 
+    private List<User> users;
+
     protected override async Task OnInitializedAsync()
     {
         forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        users = await UserService.GetUsersAsync();
     }
 }
