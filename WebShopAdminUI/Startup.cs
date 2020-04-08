@@ -38,7 +38,7 @@ namespace WebShopAdminUI
                             .AllowAnyOrigin();
                 });
             });
-
+            var a = "szia";
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
