@@ -9,9 +9,11 @@ namespace Entities
     public class Cart
     {
         [Key]
-        public int Id { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public int CartId { get; set; }
 
         public double SubTotal { get; set; }
+
+
+        public List<CartProduct> CartProducts { get; set; }
     }
 }

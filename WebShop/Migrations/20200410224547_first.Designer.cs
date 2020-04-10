@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebShop.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200410155731_First")]
-    partial class First
+    [Migration("20200410224547_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,7 @@ namespace WebShop.Migrations
 
             modelBuilder.Entity("Entities.Cart", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -55,9 +55,24 @@ namespace WebShop.Migrations
                     b.Property<double>("SubTotal")
                         .HasColumnType("float");
 
-                    b.HasKey("Id");
+                    b.HasKey("CartId");
 
                     b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Entities.CartProduct", b =>
+                {
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartProduct");
                 });
 
             modelBuilder.Entity("Entities.Category", b =>
@@ -117,7 +132,7 @@ namespace WebShop.Migrations
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -127,18 +142,45 @@ namespace WebShop.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("Entities.Product", b =>
+            modelBuilder.Entity("Entities.Keyword", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("KeyWord")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Keyword");
+                });
+
+            modelBuilder.Entity("Entities.KeywordProduct", b =>
+                {
+                    b.Property<int>("KeywordId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("KeywordId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("KeywordProduct");
+                });
+
+            modelBuilder.Entity("Entities.Product", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<double>("BuyPrice")
                         .HasColumnType("float");
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
@@ -155,7 +197,7 @@ namespace WebShop.Migrations
                     b.Property<string>("OrderLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentId")
+                    b.Property<int?>("ParentProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductCode")
@@ -173,13 +215,11 @@ namespace WebShop.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
+                    b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("ParentProductId");
 
                     b.ToTable("Products");
                 });
@@ -260,6 +300,21 @@ namespace WebShop.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Entities.CartProduct", b =>
+                {
+                    b.HasOne("Entities.Cart", "Cart")
+                        .WithMany("CartProducts")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Product", "Product")
+                        .WithMany("CartProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Category", b =>
                 {
                     b.HasOne("Entities.Category", "Parent")
@@ -269,24 +324,37 @@ namespace WebShop.Migrations
 
             modelBuilder.Entity("Entities.Image", b =>
                 {
-                    b.HasOne("Entities.Product", null)
+                    b.HasOne("Entities.Product", "Product")
                         .WithMany("Images")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.KeywordProduct", b =>
+                {
+                    b.HasOne("Entities.Keyword", "Keyword")
+                        .WithMany("KeywordProducts")
+                        .HasForeignKey("KeywordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Product", "Product")
+                        .WithMany("KeywordProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
                 {
-                    b.HasOne("Entities.Cart", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("Entities.Product", "Parent")
                         .WithMany()
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentProductId");
                 });
 
             modelBuilder.Entity("Entities.Review", b =>
