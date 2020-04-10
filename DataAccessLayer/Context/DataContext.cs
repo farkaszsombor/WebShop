@@ -10,7 +10,6 @@ namespace DataAccessLayer.Context
         {
         }
 
-        public DbSet<Data> MyProperty { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
