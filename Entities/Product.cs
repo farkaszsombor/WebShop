@@ -26,5 +26,7 @@ namespace Entities
         public ICollection<Image> Images { get; set; }
         
         public Product Parent { get; set; }
+
+        public virtual ICollection<Cart> Carts { get; set; }
     }
 }

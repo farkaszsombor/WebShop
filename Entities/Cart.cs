@@ -10,8 +10,7 @@ namespace Entities
     {
         [Key]
         public int Id { get; set; }
-        public ICollection<Product> Products { get; set; }
-
         public double SubTotal { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }
