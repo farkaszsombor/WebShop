@@ -5,14 +5,15 @@ namespace DataAccessLayer.Context
 {
     public class DataContext : DbContext
     {
-        public DbSet<Cart> Carts{ get; set; }
-        public DbSet<Card> Cards { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Geo> Geos { get; set; }
-        public DbSet<Image> Images { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<Cart> Carts{ get; set; }
+        public virtual DbSet<Card> Cards { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Geo> Geos { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
