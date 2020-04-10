@@ -6,12 +6,13 @@ using System.Text;
 
 namespace Entities
 {
-    public class Category
+    public class Review
     {
         [Key]
         public int Id { get; set; }
-        public Category Parent { get; set; } = null;
-        public string Name { get; set; }
-        public bool IsActive { get; set; }
+        public Product Product { get; set; }
+        public User User { get; set; }
+        public string ReviewText { get; set; }
+        public int Stars { get; set; }
     }
 }

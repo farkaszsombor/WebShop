@@ -18,9 +18,8 @@ namespace Entities
         public string PhoneNumber { get; set; }
         public int OrdersCount { get; set; }
 
-        [ForeignKey("GeoId")]
         public Geo Geo { get; set; } = null;
-        [ForeignKey("CardId")]
         public Card Card { get; set; } = null;
+        public Cart Cart { get; set; }
     }
 }

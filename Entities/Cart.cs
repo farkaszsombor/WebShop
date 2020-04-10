@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Entities
 {
-    public class Category
+    public class Cart
     {
         [Key]
         public int Id { get; set; }
-        public Category Parent { get; set; } = null;
-        public string Name { get; set; }
-        public bool IsActive { get; set; }
+        public ICollection<Product> Products { get; set; }
+
+        public double SubTotal { get; set; }
     }
 }
