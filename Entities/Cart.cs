@@ -12,8 +12,6 @@ namespace Entities
         public int CartId { get; set; }
 
         public double SubTotal { get; set; }
-
-
         public List<CartProduct> CartProducts { get; set; }
     }
 }

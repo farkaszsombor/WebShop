@@ -33,29 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200410171829_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200410171829_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200410172341_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200410172341_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200410172924_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200410172924_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200410173926_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200410173926_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200410174525_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200410174525_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200410174934_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200410174934_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200410184310_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200410184310_InitialCreate.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
