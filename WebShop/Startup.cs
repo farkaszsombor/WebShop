@@ -1,3 +1,4 @@
+using DataAccessLayer;
 using DataAccessLayer.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace WebShop
             services.AddControllersWithViews();
 
             services.AddDbContext<DataContext>(options=> options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=WebShopDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False", b => b.MigrationsAssembly("WebShop")));
+            services.AddSingleton<IDBService, DBService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
