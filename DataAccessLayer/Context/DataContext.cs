@@ -6,7 +6,7 @@ namespace DataAccessLayer.Context
 {
     public class DataContext : DbContext
     {
-        public virtual DbSet<Cart> Carts{ get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Card> Cards { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Geo> Geos { get; set; }
@@ -19,7 +19,6 @@ namespace DataAccessLayer.Context
             : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region CartProductNtoN
@@ -64,50 +63,69 @@ namespace DataAccessLayer.Context
             #region DataSeed
 
 
-            Geo geo1 = new Geo { County = "Bihor", Locality = "Oradea" };
-            Geo geo2 = new Geo { County = "Harghita", Locality = "Gheorgeni" };
+            Geo geo1 = new Geo { Id = 1, County = "Bihor", Locality = "Oradea" };
+            Geo geo2 = new Geo { Id = 2, County = "Harghita", Locality = "Gheorgeni" };
 
-            Keyword key1 = new Keyword { KeyWord = "csavarhuzo", KeywordProducts = new List<KeywordProduct>() };
-            Keyword key2 = new Keyword { KeyWord = "fogaskerek", KeywordProducts = new List<KeywordProduct>() };
-            Keyword key3 = new Keyword { KeyWord = "kulcs", KeywordProducts = new List<KeywordProduct>() };
+            Keyword key1 = new Keyword { Id = 1, KeyWord = "csavarhuzo", KeywordProducts = new List<KeywordProduct>()};
+            Keyword key2 = new Keyword { Id = 2, KeyWord = "fogaskerek", KeywordProducts = new List<KeywordProduct>()};
+            Keyword key3 = new Keyword { Id = 3, KeyWord = "kulcs", KeywordProducts = new List<KeywordProduct>() };
 
-            KeywordProduct kp1 = new KeywordProduct { Keyword = key1, KeywordId = key1.Id };
-            KeywordProduct kp2 = new KeywordProduct { Keyword = key2, KeywordId = key2.Id };
-            KeywordProduct kp3 = new KeywordProduct { Keyword = key3, KeywordId = key3.Id };
+            KeywordProduct kp1 = new KeywordProduct {  KeywordId = key1.Id };
+            KeywordProduct kp2 = new KeywordProduct {  KeywordId = key2.Id };
+            KeywordProduct kp3 = new KeywordProduct {  KeywordId = key3.Id };
 
             key1.KeywordProducts.Add(kp1);
             key2.KeywordProducts.Add(kp2);
             key3.KeywordProducts.Add(kp3);
 
+
             Category cat1 = new Category { Id = 1, IsActive = true, Name = "Main1" };
             Category cat2 = new Category { Id = 2, IsActive = true, Name = "Main2" };
 
 
-            Category sub1 = new Category { Id = 3, IsActive = true, Name = "Sub1", Parent = cat1 };
-            Category sub2 = new Category { Id = 4, IsActive = true, Name = "Sub2", Parent = cat1 };
-            Category sub3 = new Category { Id = 5, IsActive = true, Name = "Sub3", Parent = cat2 };
+            Category sub1 = new Category { Id = 3, IsActive = true, Name = "Sub1", ParentId = cat1.Id };
+            Category sub2 = new Category { Id = 4, IsActive = true, Name = "Sub2", ParentId = cat1.Id };
+            Category sub3 = new Category { Id = 5, IsActive = true, Name = "Sub3", ParentId = cat2.Id };
 
-            Product product1 = new Product { BuyPrice = 100, SalePrice = 125, Name = "Termek1", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp3 } };
-            Product product2 = new Product { BuyPrice = 100, SalePrice = 125, Name = "Termek2", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp2 } };
-            Product product3 = new Product { BuyPrice = 100, SalePrice = 125, Name = "Termek3", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp1 } };
+            Product product1 = new Product { Id = 1, BuyPrice = 100, SalePrice = 125, Name = "Termek1", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp3 } };
+            Product product2 = new Product { Id = 2, BuyPrice = 100, SalePrice = 125, Name = "Termek2", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp2 } };
+            Product product3 = new Product { Id = 3, BuyPrice = 100, SalePrice = 125, Name = "Termek3", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp1 } };
 
-            kp1.Product = product3;
-            kp1.ProductId = product3.ProductId;
-            kp2.Product = product2;
-            kp2.ProductId = product2.ProductId;
-            kp3.Product = product1;
-            kp3.ProductId = product1.ProductId;
-            /*
-            modelBuilder.Entity<Category>(c =>
-            {
-                c.HasData(sub1);
-                c.OwnsOne(o => o.Parent).HasData(cat1);
-            });*/
+          
+            kp1.ProductId = product3.Id;
+            kp2.ProductId = product2.Id;
+            kp3.ProductId = product1.Id;
 
+            modelBuilder.Entity<Category>()
+                .HasData(
+                cat1, cat2,
+                sub1, sub2, sub3
+                );
+
+
+            modelBuilder.Entity<Geo>()
+                .HasData(
+                geo1, geo2
+                );
+
+            modelBuilder.Entity<KeywordProduct>()
+              .HasData(
+              kp1, kp2, kp3
+              );
+
+            modelBuilder.Entity<Keyword>()
+                .HasData(
+                key1, key2, key3
+                );
+
+
+            //modelBuilder.Entity<Product>()
+            //    .HasData(
+            //    product1, product2, product3
+            //    );
             #endregion
 
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=WebShopDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");

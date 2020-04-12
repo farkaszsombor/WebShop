@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShop", "WebShop\WebShop.csproj", "{0DB23564-9932-4D98-AEC2-D418AFD66946}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShopAdminUI", "WebShopAdminUI\WebShopAdminUI.csproj", "{3346A897-AE36-45F3-B70C-4D4EF6DF9276}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShopAdminUI", "WebShopAdminUI\WebShopAdminUI.csproj", "{3346A897-AE36-45F3-B70C-4D4EF6DF9276}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

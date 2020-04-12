@@ -10,8 +10,10 @@ namespace Entities
     {
         [Key]
         public int Id { get; set; }
-        public Category Parent { get; set; } = null;
         public string Name { get; set; }
         public bool IsActive { get; set; }
+
+        public Category Parent { get; set; } = null;
+        public int? ParentId { get; set; }
     }
 }
