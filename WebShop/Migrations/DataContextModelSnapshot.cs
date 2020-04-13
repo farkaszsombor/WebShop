@@ -41,11 +41,29 @@ namespace WebShop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cvv = 0,
+                            ExpirationDate = new DateTime(11, 1, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Holder = "Kiscsillag",
+                            Number = "hahahaha"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cvv = 0,
+                            ExpirationDate = new DateTime(6, 1, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Holder = "Pikans",
+                            Number = "hahahaha"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Cart", b =>
                 {
-                    b.Property<int>("CartId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -53,9 +71,21 @@ namespace WebShop.Migrations
                     b.Property<double>("SubTotal")
                         .HasColumnType("float");
 
-                    b.HasKey("CartId");
+                    b.HasKey("Id");
 
                     b.ToTable("Carts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            SubTotal = 123.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            SubTotal = 123.0
+                        });
                 });
 
             modelBuilder.Entity("Entities.CartProduct", b =>
@@ -71,6 +101,18 @@ namespace WebShop.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("CartProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            CartId = 1,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            CartId = 2,
+                            ProductId = 1
+                        });
                 });
 
             modelBuilder.Entity("Entities.Category", b =>
@@ -91,9 +133,27 @@ namespace WebShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("ParentId")
+                        .IsUnique()
+                        .HasFilter("[ParentId] IS NOT NULL");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsActive = true,
+                            Name = "alma",
+                            ParentId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsActive = true,
+                            Name = "alma",
+                            ParentId = 1
+                        });
                 });
 
             modelBuilder.Entity("Entities.Geo", b =>
@@ -112,6 +172,20 @@ namespace WebShop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Geos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            County = "Bihor",
+                            Locality = "Oradea"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            County = "Harghita",
+                            Locality = "Gheorgeni"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Image", b =>
@@ -138,6 +212,24 @@ namespace WebShop.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Images");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Alt = "asd",
+                            FileName = "long",
+                            Path = "bumm",
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Alt = "asd",
+                            FileName = "long",
+                            Path = "bumm",
+                            ProductId = 1
+                        });
                 });
 
             modelBuilder.Entity("Entities.Keyword", b =>
@@ -150,9 +242,26 @@ namespace WebShop.Migrations
                     b.Property<string>("KeyWord")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("KeywordProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Keyword");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            KeyWord = "bicska",
+                            KeywordProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            KeyWord = "bicskav2",
+                            KeywordProductId = 2
+                        });
                 });
 
             modelBuilder.Entity("Entities.KeywordProduct", b =>
@@ -168,11 +277,23 @@ namespace WebShop.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("KeywordProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            KeywordId = 1,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            KeywordId = 1,
+                            ProductId = 2
+                        });
                 });
 
             modelBuilder.Entity("Entities.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -180,7 +301,7 @@ namespace WebShop.Migrations
                     b.Property<double>("BuyPrice")
                         .HasColumnType("float");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImportCountryCode")
@@ -195,7 +316,7 @@ namespace WebShop.Migrations
                     b.Property<string>("OrderLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentProductId")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProductCode")
@@ -213,13 +334,50 @@ namespace WebShop.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .IsUnique();
 
-                    b.HasIndex("ParentProductId");
+                    b.HasIndex("ParentId")
+                        .IsUnique()
+                        .HasFilter("[ParentId] IS NOT NULL");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BuyPrice = 12.0,
+                            CategoryId = 1,
+                            ImportCountryCode = "JPN",
+                            LongDescription = "aaaaa",
+                            Name = "Csavarhuzo",
+                            OrderLink = "hosszu",
+                            ParentId = 1,
+                            ProductCode = "asd",
+                            SalePrice = 10.0,
+                            ShortDescription = "a",
+                            Stock = 10,
+                            Type = "kesztyu"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BuyPrice = 12.0,
+                            CategoryId = 2,
+                            ImportCountryCode = "JPNA",
+                            LongDescription = "aaaaa",
+                            Name = "Csavarhuszo",
+                            OrderLink = "hosszu",
+                            ParentId = 2,
+                            ProductCode = "assssd",
+                            SalePrice = 10.0,
+                            ShortDescription = "a",
+                            Stock = 10,
+                            Type = "kesztyu"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Review", b =>
@@ -229,7 +387,7 @@ namespace WebShop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewText")
@@ -238,16 +396,27 @@ namespace WebShop.Migrations
                     b.Property<int>("Stars")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Reviews");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProductId = 1,
+                            ReviewText = "blablA",
+                            Stars = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ProductId = 2,
+                            ReviewText = "blasblA",
+                            Stars = 3
+                        });
                 });
 
             modelBuilder.Entity("Entities.User", b =>
@@ -260,10 +429,10 @@ namespace WebShop.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CardId")
+                    b.Property<int>("CardId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId")
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -272,7 +441,7 @@ namespace WebShop.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GeoId")
+                    b.Property<int>("GeoId")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
@@ -287,15 +456,56 @@ namespace WebShop.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CardId");
+                    b.HasIndex("CardId")
+                        .IsUnique();
 
-                    b.HasIndex("CartId");
+                    b.HasIndex("CartId")
+                        .IsUnique();
 
-                    b.HasIndex("GeoId");
+                    b.HasIndex("GeoId")
+                        .IsUnique();
+
+                    b.HasIndex("ReviewId")
+                        .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "WTF",
+                            CardId = 1,
+                            CartId = 1,
+                            Email = "asd@asd.com",
+                            FirstName = "Farkas",
+                            GeoId = 1,
+                            LastName = "Zsombor",
+                            OrdersCount = 0,
+                            PasswordHash = "ZSFSAFASFS",
+                            PhoneNumber = "nincs",
+                            ReviewId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "WTF",
+                            CardId = 2,
+                            CartId = 2,
+                            Email = "asd@asd.com",
+                            FirstName = "Rapa",
+                            GeoId = 2,
+                            LastName = "Erik",
+                            OrdersCount = 0,
+                            PasswordHash = "ZSFSAFASFS",
+                            PhoneNumber = "nincs",
+                            ReviewId = 2
+                        });
                 });
 
             modelBuilder.Entity("Entities.CartProduct", b =>
@@ -316,8 +526,9 @@ namespace WebShop.Migrations
             modelBuilder.Entity("Entities.Category", b =>
                 {
                     b.HasOne("Entities.Category", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
+                        .WithOne()
+                        .HasForeignKey("Entities.Category", "ParentId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("Entities.Image", b =>
@@ -347,38 +558,51 @@ namespace WebShop.Migrations
             modelBuilder.Entity("Entities.Product", b =>
                 {
                     b.HasOne("Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .WithOne("Product")
+                        .HasForeignKey("Entities.Product", "CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Entities.Product", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentProductId");
+                        .WithOne()
+                        .HasForeignKey("Entities.Product", "ParentId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("Entities.Review", b =>
                 {
                     b.HasOne("Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.User", b =>
                 {
                     b.HasOne("Entities.Card", "Card")
-                        .WithMany()
-                        .HasForeignKey("CardId");
+                        .WithOne("User")
+                        .HasForeignKey("Entities.User", "CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Entities.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId");
+                        .WithOne("User")
+                        .HasForeignKey("Entities.User", "CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Entities.Geo", "Geo")
-                        .WithMany()
-                        .HasForeignKey("GeoId");
+                        .WithOne("User")
+                        .HasForeignKey("Entities.User", "GeoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Review", "Review")
+                        .WithOne("User")
+                        .HasForeignKey("Entities.User", "ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

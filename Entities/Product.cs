@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Entities
 {
     public class Product
     {
-        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public double BuyPrice { get; set; }
@@ -21,14 +16,18 @@ namespace Entities
         public string LongDescription { get; set; }
         public string Type { get; set; }
 
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
-        
-        public List<Image> Images { get; set; }
-        
-        public Product Parent { get; set; }
 
-        public List<CartProduct> CartProducts { get; set; }
+        public int? ParentId { get; set; }
+        public Product Parent { get; set; } = null;
 
-        public List<KeywordProduct> KeywordProducts { get; set; }
+        public ICollection<Image> Images { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<CartProduct> CartProducts { get; set; }
+
+        public ICollection<KeywordProduct> KeywordProducts { get; set; }
     }
 }

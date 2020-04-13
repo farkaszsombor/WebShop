@@ -1,6 +1,6 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System;
 
 namespace DataAccessLayer.Context
 {
@@ -21,110 +21,122 @@ namespace DataAccessLayer.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region CartProductNtoN
-            modelBuilder.Entity<CartProduct>()
-               .HasKey(t => new { t.CartId, t.ProductId });
-
-            modelBuilder.Entity<CartProduct>()
-                .HasOne(ho => ho.Cart)
-                .WithMany(w => w.CartProducts)
-                .HasForeignKey(hf => hf.CartId);
-
-            modelBuilder.Entity<CartProduct>()
-                .HasOne(ho => ho.Product)
-                .WithMany(w => w.CartProducts)
-                .HasForeignKey(hf => hf.ProductId);
-            #endregion
-
-
-            #region KeywordProductNtoN
-            modelBuilder.Entity<KeywordProduct>()
-                 .HasKey(t => new { t.KeywordId, t.ProductId });
-
-            modelBuilder.Entity<KeywordProduct>()
-                .HasOne(ho => ho.Keyword)
-                .WithMany(w => w.KeywordProducts)
-                .HasForeignKey(hf => hf.KeywordId);
-
-            modelBuilder.Entity<KeywordProduct>()
-                .HasOne(ho => ho.Product)
-                .WithMany(w => w.KeywordProducts)
-                .HasForeignKey(hf => hf.ProductId);
-            #endregion
-
-
-            #region ProductImagesOneToN
-            modelBuilder.Entity<Image>()
-               .HasOne(ho => ho.Product)
-               .WithMany(w => w.Images)
-               .HasForeignKey(hf => hf.ProductId);
-            #endregion
-
-            #region DataSeed
-
-
+            #region data
             Geo geo1 = new Geo { Id = 1, County = "Bihor", Locality = "Oradea" };
             Geo geo2 = new Geo { Id = 2, County = "Harghita", Locality = "Gheorgeni" };
 
-            Keyword key1 = new Keyword { Id = 1, KeyWord = "csavarhuzo", KeywordProducts = new List<KeywordProduct>()};
-            Keyword key2 = new Keyword { Id = 2, KeyWord = "fogaskerek", KeywordProducts = new List<KeywordProduct>()};
-            Keyword key3 = new Keyword { Id = 3, KeyWord = "kulcs", KeywordProducts = new List<KeywordProduct>() };
+            Card card1 = new Card { Id = 1, Holder = "Kiscsillag", Number = "hahahaha", Cvv = 000, ExpirationDate = new DateTime().AddDays(12).AddYears(10) };
+            Card card2 = new Card { Id = 2, Holder = "Pikans", Number = "hahahaha", Cvv = 000, ExpirationDate = new DateTime().AddDays(12).AddYears(5) };
 
-            KeywordProduct kp1 = new KeywordProduct {  KeywordId = key1.Id };
-            KeywordProduct kp2 = new KeywordProduct {  KeywordId = key2.Id };
-            KeywordProduct kp3 = new KeywordProduct {  KeywordId = key3.Id };
+            User user1 = new User { Id = 1, FirstName = "Farkas", LastName = "Zsombor", Email = "asd@asd.com", Address = "WTF", PasswordHash = "ZSFSAFASFS", OrdersCount = 0, PhoneNumber = "nincs", GeoId = 1, CardId = 1, CartId = 1,ReviewId = 1};
+            User user2 = new User { Id = 2, FirstName = "Rapa", LastName = "Erik", Email = "asd@asd.com", Address = "WTF", PasswordHash = "ZSFSAFASFS", OrdersCount = 0, PhoneNumber = "nincs", GeoId = 2, CardId = 2, CartId = 2, ReviewId = 2 };
 
-            key1.KeywordProducts.Add(kp1);
-            key2.KeywordProducts.Add(kp2);
-            key3.KeywordProducts.Add(kp3);
+            CartProduct cartProduct1 = new CartProduct { CartId = 1, ProductId = 1 };
+            CartProduct cartProduct2 = new CartProduct { CartId = 2, ProductId = 1 };
 
+            Cart cart1 = new Cart { Id = 1, SubTotal = 123 };
+            Cart cart2 = new Cart { Id = 2, SubTotal = 123 };
 
-            Category cat1 = new Category { Id = 1, IsActive = true, Name = "Main1" };
-            Category cat2 = new Category { Id = 2, IsActive = true, Name = "Main2" };
+            Product product1 = new Product { Id = 1, Name = "Csavarhuzo", BuyPrice = 12, SalePrice = 10, ProductCode = "asd", ImportCountryCode = "JPN", OrderLink = "hosszu", Stock = 10, ShortDescription = "a", LongDescription = "aaaaa", Type = "kesztyu", CategoryId = 1, ParentId = 1};
+            Product product2 = new Product { Id = 2, Name = "Csavarhuszo", BuyPrice = 12, SalePrice = 10, ProductCode = "assssd", ImportCountryCode = "JPNA", OrderLink = "hosszu", Stock = 10, ShortDescription = "a", LongDescription = "aaaaa", Type = "kesztyu", CategoryId = 2, ParentId = 2};
 
+            Category category1 = new Category { Id = 1, IsActive = true, Name = "alma", ParentId = 1 };
+            Category category2 = new Category { Id = 2, IsActive = true, Name = "alma", ParentId = 1 };
 
-            Category sub1 = new Category { Id = 3, IsActive = true, Name = "Sub1", ParentId = cat1.Id };
-            Category sub2 = new Category { Id = 4, IsActive = true, Name = "Sub2", ParentId = cat1.Id };
-            Category sub3 = new Category { Id = 5, IsActive = true, Name = "Sub3", ParentId = cat2.Id };
+            Image image1 = new Image { Id = 1, Alt = "asd", FileName = "long", Path = "bumm", ProductId = 1 }; 
+            Image image2 = new Image { Id = 2, Alt = "asd", FileName = "long", Path = "bumm", ProductId = 1 };
 
-            Product product1 = new Product { Id = 1, BuyPrice = 100, SalePrice = 125, Name = "Termek1", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp3 } };
-            Product product2 = new Product { Id = 2, BuyPrice = 100, SalePrice = 125, Name = "Termek2", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp2 } };
-            Product product3 = new Product { Id = 3, BuyPrice = 100, SalePrice = 125, Name = "Termek3", Stock = 50, Category = sub3, KeywordProducts = new List<KeywordProduct> { kp1 } };
+            Keyword keyword1 = new Keyword { Id = 1, KeyWord = "bicska", KeywordProductId = 1 };
+            Keyword keyword2 = new Keyword { Id = 2, KeyWord = "bicskav2", KeywordProductId = 2};
 
-          
-            kp1.ProductId = product3.Id;
-            kp2.ProductId = product2.Id;
-            kp3.ProductId = product1.Id;
+            KeywordProduct keywordProduct1 = new KeywordProduct { KeywordId = 1, ProductId = 1 };
+            KeywordProduct keywordProduct2 = new KeywordProduct { KeywordId = 1, ProductId = 2 };
 
-            modelBuilder.Entity<Category>()
-                .HasData(
-                cat1, cat2,
-                sub1, sub2, sub3
-                );
+            Review review1 = new Review { Id = 1, ProductId = 1, ReviewText = "blablA", Stars = 3 };
+            Review review2 = new Review { Id = 2, ProductId = 2, ReviewText = "blasblA", Stars = 3 };
 
-
-            modelBuilder.Entity<Geo>()
-                .HasData(
-                geo1, geo2
-                );
-
-            modelBuilder.Entity<KeywordProduct>()
-              .HasData(
-              kp1, kp2, kp3
-              );
-
-            modelBuilder.Entity<Keyword>()
-                .HasData(
-                key1, key2, key3
-                );
-
-
-            //modelBuilder.Entity<Product>()
-            //    .HasData(
-            //    product1, product2, product3
-            //    );
             #endregion
 
+            #region tableBuilder
+            modelBuilder.Entity<User>(builder =>
+            {
+                builder.HasKey(user => user.Id);
+                builder.HasOne(o => o.Geo).WithOne(o => o.User).HasForeignKey<User>(fk => fk.GeoId);
+                builder.HasOne(o => o.Card).WithOne(o => o.User).HasForeignKey<User>(fk => fk.CardId);
+                builder.HasOne(o => o.Cart).WithOne(o => o.User).HasForeignKey<User>(fk => fk.CartId);
+                builder.HasOne(o => o.Review).WithOne(o => o.User).HasForeignKey<User>(fk => fk.ReviewId);
+                builder.HasData(user1, user2);
+            });
+
+            modelBuilder.Entity<Geo>(builder => 
+            {
+                builder.HasKey(geo => geo.Id);
+                builder.HasData(geo1, geo2);
+            });
+
+            modelBuilder.Entity<Card>(builder =>
+            {
+                builder.HasKey(card => card.Id);
+                builder.HasData(card1, card2);
+            });
+
+            modelBuilder.Entity<Cart>(builder =>
+            {
+                builder.HasKey(cart => cart.Id);
+                builder.HasData(cart1, cart2);
+            });
+
+            modelBuilder.Entity<CartProduct>(builder =>
+            {
+                builder.HasKey(cartproduct => new { cartproduct.CartId, cartproduct.ProductId });
+                builder.HasOne(o => o.Cart).WithMany(m => m.CartProducts).HasForeignKey(fk => fk.CartId);
+                builder.HasOne(o => o.Product).WithMany(m => m.CartProducts).HasForeignKey(fk => fk.ProductId);
+                builder.HasData(cartProduct1, cartProduct2);
+            });
+
+            modelBuilder.Entity<Product>(builder =>
+            {
+                builder.HasKey(product => product.Id);
+                builder.HasOne(o => o.Category).WithOne(o => o.Product).HasForeignKey<Product>(fk => fk.CategoryId);
+                builder.HasMany(o => o.Images).WithOne(o => o.Product).HasForeignKey(fk => fk.ProductId);
+                builder.HasOne(o => o.Parent).WithOne().HasForeignKey<Product>(fk => fk.ParentId).OnDelete(DeleteBehavior.NoAction);
+                builder.HasData(product1, product2);
+            });
+
+            modelBuilder.Entity<Category>(builder => 
+            {
+                builder.HasKey(category => category.Id);
+                builder.HasOne(o => o.Parent).WithOne().HasForeignKey<Category>(fk => fk.ParentId).OnDelete(DeleteBehavior.NoAction);
+                builder.HasData(category1, category2);
+            });
+
+            modelBuilder.Entity<Image>(builder =>
+            {
+                builder.HasKey(iamge => iamge.Id);
+                builder.HasData(image1, image2);
+            });
+
+            modelBuilder.Entity<Keyword>(builder =>
+            {
+                builder.HasKey(keyword => keyword.Id);
+                builder.HasData(keyword1, keyword2);
+            });
+
+            modelBuilder.Entity<KeywordProduct>(builder =>
+            {
+                builder.HasKey(keywordProduct => new { keywordProduct.KeywordId, keywordProduct.ProductId});
+                builder.HasOne(o => o.Product).WithMany(o => o.KeywordProducts).HasForeignKey(fk => fk.ProductId);
+                builder.HasOne(o => o.Keyword).WithMany(o => o.KeywordProducts).HasForeignKey(fk => fk.KeywordId);
+                builder.HasData(keywordProduct1, keywordProduct2);
+            });
+
+            modelBuilder.Entity<Review>(builder =>
+            {
+                builder.HasKey(review => review.Id);
+                builder.HasOne(o => o.Product).WithMany(o => o.Reviews).HasForeignKey(fk => fk.ProductId);
+                builder.HasData(review1, review2);
+            });
+            #endregion
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
