@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebShop.Utils;
 
 namespace WebShop
 {
@@ -24,19 +25,26 @@ namespace WebShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            CORSConfiguration configuration = Configuration.GetSection("Cors").Get<CORSConfiguration>();
+            DatabaseConfiguration databaseConfiguration = Configuration.GetSection("ConnectionStrings").Get<DatabaseConfiguration>();
+            CORSConfiguration corsConfiguration = Configuration.GetSection("Cors").Get<CORSConfiguration>();
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins(configuration.AllowedOrigins.ToArray())
-                            .WithMethods(configuration.AllowedMethods.ToArray());
+                    builder.WithOrigins(corsConfiguration.AllowedOrigins.ToArray())
+                            .WithMethods(corsConfiguration.AllowedMethods.ToArray());
                 });
             });
 
             services.AddControllersWithViews();
 
-            services.AddDbContext<DataContext>(options=> options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=WebShopDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False", b => b.MigrationsAssembly("WebShop")));
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlServer(databaseConfiguration.WebShopDatabase, builder => 
+                {
+                    builder.MigrationsAssembly(databaseConfiguration.MigrationLocation);
+                });
+            });
             services.AddSingleton<IDBService, DBService>();
         }
 
